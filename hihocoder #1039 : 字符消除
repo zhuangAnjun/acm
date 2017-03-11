@@ -1,0 +1,62 @@
+#include<iostream>
+#include<string>
+#include<vector>
+
+using namespace std;
+
+int Str(string s)
+{
+    int flag = 1;
+    while(flag)
+    {
+        string temp;
+        flag = 0;
+        for(int i=0;i<s.length();i++)
+        {
+            if(s[i]!=s[i+1])
+            {
+                temp.push_back(s[i]);
+            }
+            else
+            {
+                flag = 1;
+                while(1)
+                {
+                    if(s[i]==s[i+1])
+                        i++;
+                    else break;
+                }
+            }
+        }
+        s=temp;
+        temp.clear();
+      //  cout<<s<<endl;
+    }
+    return s.length();
+}
+
+int main()
+{
+    int T;
+    cin>>T;
+    string s;
+    while(cin>>s)
+    {
+        int l=s.length(),len=10000;
+        char k[3]={'A','B','C'};
+        for(int i=0;i<=l;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                string ss(s);
+                ss.insert(i,1,k[j]);
+                int l1=Str(ss);
+                if(l1<len)
+                {
+                    len = l1;
+                }
+            }
+        }
+        cout<<l-len+1<<endl;
+    }
+}
