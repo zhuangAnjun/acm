@@ -1,0 +1,68 @@
+#include<iostream>
+#include<algorithm>
+#include<cstring>
+using namespace std;
+
+int road[1001][1001],sg[1001],k;
+
+int getsg(int place)
+{
+    if(sg[place]!=-1)
+        return sg[place];
+    int num=0,m[1001];
+    memset(m,0,sizeof(m));
+    for(int i=0;i<k;i++)
+    {
+        if(road[place][i]!=-1)
+        {
+            sg[i]=getsg(i);
+            m[sg[i]]=1;
+            num++;
+        }
+    }
+    for(int i=0;i<=num+1;i++)
+    {
+        if(m[i]==0)
+        {
+            sg[place]=i;
+            break;
+        }
+    }
+    return sg[place];
+}
+
+int main()
+{
+    while(cin>>k)
+    {
+        if(k==0)
+            break;
+        memset(road,-1,sizeof(road));
+        memset(sg,-1,sizeof(sg));
+        for(int i=0;i<k;i++)
+        {
+            int num,te;
+            cin>>num;
+            for(int j=0;j<num;j++)
+            {
+                cin>>te;
+                road[i][te]=1;
+            }
+        }
+        int num,Xor,te;
+        while(cin>>num)
+        {
+            if(num==0)
+                break;
+            Xor=0;
+            for(int i=0;i<num;i++)
+            {
+                cin>>te;
+                Xor^=getsg(te);
+            }
+            if(Xor==0)
+                cout<<"LOSE"<<endl;
+            else cout<<"WIN"<<endl;
+        }
+    }
+}
