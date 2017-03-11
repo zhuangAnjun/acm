@@ -1,0 +1,73 @@
+#include<iostream>
+#include<string>
+using namespace std;
+struct trie
+{
+	int flag;
+	trie *node[27];
+};
+trie *tree ;
+void creattree(string s)
+{
+	int l = s.length();
+	trie *p = tree;
+	for (int i = 0; i<l; i++)
+	{
+		if (p->node[s[i] - 'a'] == 0)
+		{
+			p->node[s[i] - 'a'] = new trie;
+			p = p->node[s[i] - 'a'];
+			for (int j = 0; j < 27; j++)
+			p->node[j] = 0;
+			p->flag = 0;
+		}
+		else
+		p = p->node[s[i] - 'a'];
+		
+		p->flag++;
+	}
+}
+void print(string s)
+{
+	string out;
+	int l = s.length();
+	trie *p = tree;
+	for (int i = 0; i<l; i++)
+	{
+		out += s[i];
+		if (p->node[s[i] - 'a']->flag == 1)
+		{
+			cout << s << ' ' << out << endl;
+			return;
+		}
+		p = p->node[s[i] - 'a'];
+	}
+	cout << s << ' ' << s << endl;
+}
+void del(trie *p)
+{
+	for (int i = 0; i<27; i++)
+	{
+		if (p->node[i] != 0)
+			del(p->node[i]);
+	}
+	delete p;
+}
+int main()
+{
+	string s[1002];
+	int i = 0;
+	tree = new trie;
+	for (int j = 0; j < 27; j++)
+		tree->node[j] = 0;
+	while (cin >> s[i])
+	{
+		creattree(s[i]);
+		i++;
+	}
+	for (int j = 0; j<i; j++)
+	{
+		print(s[j]);
+	}
+		 del(tree);
+}
