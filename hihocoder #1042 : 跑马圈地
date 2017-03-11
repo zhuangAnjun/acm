@@ -1,0 +1,48 @@
+#include<iostream>
+
+using namespace std;
+
+int main()
+{
+	int n, m, L, l, r, t, b;
+	cin >> n >> m >> L;
+		cin >> l >> r >> t >> b;
+		//把水塘位置移到右下角
+		if (m - r >= l)
+		{
+			int temp = m - r;
+			r = m-l;
+			l = temp;
+		}
+		if (n - b >= t)
+		{
+			int temp = n - b;
+			b = n - t;
+			t = temp;
+		}
+
+		int area = 0;
+		for (int i = 1; i < L / 2 && i <= n; i++)
+		{
+			for (int j = 1; j<=L/2-i&&j<=m; j++)
+			{
+				int temp = 0;
+				//圈地内没有水塘
+				if (i <= t || j <= l)
+					temp = i*j;
+				//只有一个顶点在圈地内，注意不能忘了等号
+				else if (i >= t && j >= l&&i <= b&&j <= r)
+					temp =i*j - (i - t)*(j - l);
+				
+				//整个水塘都在圈地内
+				else if (i >= b&&j >= r)
+					temp =i*j - (b - t)*(r - l);
+				if (area < temp)
+				{
+					area = temp;
+				}
+			}
+		}
+		cout << area << endl;
+		
+}
