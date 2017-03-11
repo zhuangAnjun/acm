@@ -1,0 +1,117 @@
+#include<iostream>
+#include<string>
+#include<cstring>
+using namespace std;
+struct trie
+{
+	int flag;
+	string e = "0";
+	trie *node[26];
+	trie()
+		:flag(0)
+	{
+		memset(node, 0, sizeof(node));
+	}
+};
+trie *tree = new trie;
+void creattree(string m, string e)
+{
+	int l = m.length();
+	trie *p = tree;
+	int i = 0;
+	for (i = 0; i<l; i++)
+	{
+		if (p->node[m[i] - 'a'] == NULL)
+		{
+			trie *q = new trie;
+			p->node[m[i] - 'a'] = q;
+		}
+		p = p->node[m[i] - 'a'];
+	}
+	p->flag = 1;
+	p->e = e;
+}
+string find(string m)
+{
+	int l = m.length();
+	string out, temp;
+	for (int i = 0; i <= l; i++)
+	{
+		if (m[i] == '\n' || m[i] == ' ' ||
+			m[i] == '\t'|| m[i] == '\0'||m[i]-'a'<0||m[i]-'a'>25)
+		{
+			int l1=temp.length(),ok1=0,ok2=0;
+			trie *p=tree;
+			string q;
+			for(int j=0;j<l1;j++)
+			{
+				if(p==NULL) break;
+				else if(p->node[temp[j]-'a']==NULL)
+				{
+					out+=temp;
+					q.clear();
+					ok1=1;
+					ok2=1;
+					break;
+				}
+				else
+				{
+					q+=temp[j];
+					p=p->node[temp[j]-'a'];
+				}
+			}
+			if(ok1==0&&p->e!="0") out+=p->e;
+			else if(ok2==0) out+=temp;
+		    p=tree;out += m[i];
+			temp.clear();
+		}
+			else temp += m[i];
+		}
+	return out;
+}
+void del(trie* p)
+{
+	int i;
+	for (i = 0; i<26; i++) {
+		if (p->node[i] != NULL)
+			del(p->node[i]);
+	}
+	delete p;
+}
+int main()
+{
+	string sta;
+	cin >> sta;
+	if (sta == "START")
+	{
+		tree = new trie;
+		string m, e;
+		while (1)
+		{
+			cin >> e;
+			if (e == "END") break;
+			cin >> m;
+			creattree(m, e);
+		}
+		cin >> m;
+		if (m == "START")
+		{
+			char b;
+			b = cin.get();
+			while (1)
+			{
+				getline(cin, m, '\n');
+				if (m=="END") 
+					break;
+				else
+				{
+					string out=find(m);
+					int l=out.length();
+					out.erase(out.begin()+l-1);
+					cout << out<< endl;
+				}
+			}
+			del(tree);
+		}
+	}
+} 
