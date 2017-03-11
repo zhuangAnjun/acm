@@ -1,0 +1,73 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+struct trie 
+{
+	int num;
+     trie *node[27];
+};
+
+trie* tree;
+
+void buildTree(string s)
+{
+	int l = s.length();
+	trie *p = tree;
+	for (int i = 0; i < l; i++)
+	{
+		if (p->node[s[i] - 'a'] == NULL)
+		{
+			p->node[s[i] - 'a'] = new trie;
+			p = p->node[s[i] - 'a'];
+			for (int i = 0; i < 27; i++)
+				p->node[i] = 0;
+			p->num = 1;
+		}
+		else {
+			p->node[s[i] - 'a']->num++;
+			p = p->node[s[i] - 'a'];
+		}
+	}
+	return;
+}
+
+void findTree(string s)
+{
+	int l = s.length();
+	trie *p = tree;
+	for (int i = 0; i < l; i++)
+	{
+		if (p->node[s[i] - 'a'] == NULL)
+		{
+			cout << "0" << endl;
+			return;
+		}
+		else p = p->node[s[i] - 'a'];
+	}
+	cout << p->num << endl;
+	return;
+}
+
+int main()
+{
+	tree = new trie;
+	for (int i = 0; i < 27; i++)
+		tree->node[i] = 0;
+	int num = 0;
+	string ss;
+	while (cin >> num)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			cin >> ss;
+			buildTree(ss);
+		}
+		cin >> num;
+		for (int i = 0; i < num; i++)
+		{
+			cin >> ss;
+			findTree(ss);
+		}
+	}
+}
