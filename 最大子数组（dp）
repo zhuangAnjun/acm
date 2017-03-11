@@ -1,0 +1,46 @@
+#include<iostream>
+using namespace std;
+int A[100],star,end,imax;
+bool hhh(int a,int b)
+{
+	int l=0;
+	for(int i=star;i<=b;i++)
+	l+=A[i];
+	if(l>imax) 
+	{
+	  imax=l;
+	  return 1;
+	}
+	else return 0;
+}
+void dp(int n)
+{
+	for(int i=0;i<n;i++)
+	{
+	   if(imax<=0&&imax<A[i])
+	    {
+	    	imax=A[i];
+	    	star=i;
+	    	end=i;
+		}
+		else if(hhh(star,i))
+		{
+		    end=i;
+	    }
+	    
+	}
+}
+int main()
+{
+	int n;
+	while(cin>>n)
+	{
+		for(int i=0;i<n;i++)
+		cin>>A[i];
+		imax=A[0];
+		star=0;
+		end=0;
+		dp(n);
+		cout<<imax<<endl;
+	}
+}
