@@ -1,0 +1,75 @@
+#include<iostream>
+#include<cstring>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+int road[27][27],n;
+char a[27];
+void dfs(int num,int xh,int in[],int ok[],char put[])
+{
+	if(num==n-1) 
+	{
+		for(int i=0;i<=num;i++)
+		cout<<put[i];
+		cout<<endl;
+	  return;
+	}
+	if(num!=-1)
+    for(int j=0;j<n;j++)
+	{
+		if(road[a[xh]-'a'][a[j]-'a']==1)
+		{
+			in[a[j]-'a']--;	
+		}
+	}
+	for(int i=0;i<n;i++)
+	{
+	    
+		if(in[a[i]-'a']==0&&ok[a[i]-'a']==0)
+		{
+		    
+			ok[a[i]-'a']=1;
+		    put[1+num]=a[i];
+			dfs(num+1,i,in,ok,put);
+			//回复原状态 
+		for(int j=0;j<n;j++)
+	     {
+	     	if(road[a[i]-'a'][a[j]-'a']==1)
+	    	{
+			    in[a[j]-'a']++;	
+	     	}
+	     }
+			ok[a[i]-'a']=0;
+		}
+	}
+}
+int main()
+{
+	char b[300];
+	while(gets(b))
+	{
+		int in[27],ok[27];
+		char put[27];
+		memset(road,0,sizeof(road));
+        memset(in,0,sizeof(in));
+	    memset(ok,0,sizeof(ok));
+	    n=0;
+		for(int i=0,j=0;i<strlen(b);i++)
+		{
+			if(b[i]!=' '&&b[i]!='\0')
+			{
+				a[n++]=b[i];
+			} 
+		}
+		sort(a,a+n);//按字典序排列 
+		char c,d;
+		gets(b);
+		for(int i=0;i<strlen(b);i=i+4)
+		{
+			road[b[i]-'a'][b[i+2]-'a']=1;
+			in[b[i+2]-'a']++;
+		}
+		dfs(-1,0,in,ok,put);
+		cout<<endl;
+	}
+}
