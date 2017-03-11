@@ -1,0 +1,81 @@
+#include<iostream>
+#include<queue>
+#include<cstring>
+using  namespace std;
+queue<int> Q;
+queue<char> T;
+int in[27],road[27][27];
+void toposort(int n)
+{
+	for(int i=0;i<n;i++)
+	{
+		if(in[i]==0)
+		{
+			T.push((char)(i+'A'));
+			for(int j=0;j<n;j++)
+			{
+				if(road[i][j]==1)
+				{
+					in[j]--;
+					road[i][j]=0;
+					Q.push(j);
+				}
+			}
+		}
+	}
+	while(!Q.empty())
+	{
+		
+		int f;
+		f=Q.front();
+		Q.pop();
+		if(in[f]==0)
+		{
+			T.push((char)(f+'A'));
+			for(int i=0;i<n;i++)
+			{
+				if(road[f][i]==1)
+				{
+					road[f][i]=0;
+					in[i]--;
+				}
+			}
+		}
+		else Q.push(f); 
+	}
+}
+int main()
+{
+	int n,m;
+	while(cin>>n>>m)
+	{
+		if(n==0&&m==0) break;
+		else
+		{
+			while(!Q.empty()) Q.pop();
+			while(!T.empty()) T.pop();
+			memset(in,0,sizeof(in));
+			memset(road,0,sizeof(road));
+			for(int i=0;i<m;i++)
+			{
+				
+				char a,b,c;
+				cin>>a>>b>>c;
+				if(road[a-'A'][c-'A']==0)
+				{
+					in[c-'A']++;
+				}
+				road[a-'A'][c-'A']=1;
+			}
+			toposort(n);
+			for(int i=0;i<n;i++)
+			{
+				if(i<n-1)
+				cout<<T.front()<<'<';
+				else
+				cout<<T.front()<<endl;
+				T.pop();
+			}
+		}
+	}
+}
