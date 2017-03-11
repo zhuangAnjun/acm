@@ -1,0 +1,63 @@
+#include<iostream>
+#include<queue>
+#include<cstring>
+using namespace std;
+int vis[500],road[500][500],q[500];
+void ini()
+{
+    memset(vis,0,sizeof(vis));
+    for(int i=0;i<500;i++)
+    {
+        for(int j=0;j<500;j++)
+        {
+            road[i][j]=99999999;
+        }
+    }
+    q[0]=1;
+}
+int prime(int n)
+{
+    int sum=1,temp1=1,Min,ml=0,temp,place=1;
+    while(sum<n)
+    {
+        Min=99999999;
+        for(int j=0;j<place;j++)
+        {
+        for(int i=1;i<=n;i++)
+        {
+            if(road[q[j]][i]<Min&&vis[i]==0)
+            {
+                Min=road[q[j]][i];
+                temp=i;
+                temp1=q[j];
+            }
+        }
+        }
+      //  cout<<temp1<<' '<<temp<<endl;
+        sum++;
+        vis[temp]=1;
+        ml+=Min;
+        q[place++]=temp;
+    }
+    return ml;
+}
+
+int main()
+{
+    int n,m;
+    while(cin>>n>>m)
+    {
+        ini();
+        for(int i=0;i<m;i++)
+        {
+            int a,b,c;
+            cin>>a>>b>>c;
+            road[a][b]=c;
+            road[b][a]=c;
+        }
+        vis[1]=1;
+        int ml=prime(n);
+        cout<<ml<<endl;
+    }
+}
+
