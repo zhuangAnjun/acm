@@ -1,0 +1,61 @@
+#include<iostream>
+#include<string>
+using namespace std;
+long long judge1(string s)
+{
+	long long int l = s.length();
+	long long int i;
+	for (i = 0; i<l; i++)
+	{
+		if (s[i] != '0') break;
+	}
+	//cout<<i<<endl;
+	return i;
+}
+long long judge2(string s)
+{
+	long long int l = s.length();
+	long long int i1=l-1;
+	long long a=s.find('.');
+	if(a!=s.npos)
+	for (; i1>=0; i1--)
+	{
+		if (s[i1] == '.')
+		{
+			i1--;
+			break;
+		}
+		if (s[i1] != '0') break;
+	}
+	return i1;
+}
+int main()
+{
+	string a, b;
+	while (cin >> a >> b)
+	{
+		string s, ss;
+		long long stara1 = judge1(a);
+		long long stara2 = judge2(a);
+		long long starb1 = judge1(b);
+		long long starb2 = judge2(b);
+	//	cout<<starb1<<' '<<starb2<<endl;
+	    if(stara2-stara1<0) a="0";
+	    else if(starb2-starb1<0) b="0";
+		if ((stara2-stara1>0)&&(starb2-starb1>0)&&(stara2 - stara1 != starb2 - starb1) )
+			cout << "NO" << endl;
+		else {
+			int ok = 0;
+			for (int i = stara1, j = starb1; i <=stara2; i++, j++)
+			{
+				if (a[i] != b[j])
+				{
+					ok = 1;
+					break;
+				}
+			}
+			if (ok==0) cout << "YES" << endl;
+			else cout << "NO" << endl;
+		}
+	}
+}
