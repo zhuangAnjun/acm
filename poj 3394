@@ -1,0 +1,137 @@
+//用cin,cout超时
+#include<iostream>
+#include<cstring>
+#include<cstdio>
+using namespace std;
+struct hash
+{
+	int b[6],flag;
+	hash *next;
+ };
+ const int H=1299953;
+ hash table[H];
+ int ok[H],flag;
+ bool judge(int *a,int *b)
+ {
+ 	int flag;
+ 	for(int k=0;k<6;k++)
+ 	{//cout<<a[0]<<endl;
+	flag=1;
+ 	for(int i=0;i<6;i++)
+ 	{
+ 		if(a[i]!=b[i])
+ 		{
+ 			flag=0;
+ 			break;
+		}
+	}
+	if(flag==0)
+	{
+		flag=1;
+	for(int i=0;i<6;i++)
+	{
+		//cout<<"pp"<<a[i]<<' '<<b[5-i]<<endl;
+		if(a[i]!=b[5-i])
+		{
+			flag=0;
+			break;
+		}
+	}}
+	int c=a[0];
+	if(flag==1) break;
+	for(int j=1;j<6;j++)
+ 	{
+ 		a[j-1]=a[j];
+	}
+	a[5]=c;
+	}
+	if(flag==1) return 1;
+	else return 0;
+ }
+ int hashnum(int *a)
+ {
+ 	int sum;
+ 	for(int i=0;i<6;i++)
+ 	{
+ 		sum+=a[i];
+	 }
+	 sum%=H;
+	 return sum;
+ }
+ void creat1(int num,int *a)
+ {
+ 	for(int i=0;i<6;i++)
+ 	{
+ 		table[num].b[i]=a[i];
+	}
+	table[num].next=0;
+ }
+ void creat2(int num,int *a)
+ {
+ 	hash *c=&table[num];
+ 	while(c->next)
+ 	{
+ 		c=c->next;
+	}
+	 c->next=new hash;
+	 c=c->next;
+	 c->next=0;
+	 for(int i=0;i<6;i++)
+	 {
+	 	c->b[i]=a[i];
+	 }
+ }
+ void find(int *a)
+ {
+ 	int num=hashnum(a);
+ 	if(table[num].flag==0)
+ 	{
+ 		creat1(num,a);
+ 		table[num].flag=1;
+ 		return;
+	}
+	hash *p=&table[num];
+	while(p->next)
+	{
+		if(judge(a,p->b))
+		{
+			flag=1;
+			break;
+		} 
+		p=p->next;
+	}
+	if(flag==0)
+	{
+		if(judge(a,p->b))
+		flag=1;
+	}
+	if(flag==0)
+	{
+		creat2(num,a);
+	}
+ }
+ int main()
+ {
+ 	int n;
+ 	scanf("%d",&n);
+	flag=0;
+	//cout<<"ok"<<endl;
+	for(int i=0;i<n;i++)
+	{
+	table[i].next=0;
+	table[i].flag=0;}
+ 	while(n--)
+ 	{
+ 		int a[6];
+ 		for(int i=0;i<6;i++)
+ 		{
+ 			scanf("%d",&a[i]);
+		}
+		if(flag==0)
+		find(a);
+	}
+	if(flag)
+	printf("Twin snowflakes found.\n");
+	else
+	printf("No two snowflakes are alike.\n");
+ }
