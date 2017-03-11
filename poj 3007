@@ -1,0 +1,89 @@
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+struct trie
+{
+	int sum;
+	trie *next[27];
+};
+trie tree[6000000];
+trie root;
+int sum,total;
+void creat()
+{
+	total=0;
+	root.sum=0;
+	sum=0;
+	memset(root.next,0,sizeof(root.next));
+}
+string Reverse(string s)
+{
+	reverse(s.begin(),s.end());
+	return s;
+}
+void creattree(string s)
+{
+	//cout<<s<<endl;
+	int l=s.length();
+	trie *p=&root;
+	for(int i=0;i<l;i++)
+	{
+		int id;
+		if(s[i]>='a'&&s[i]<='z')
+		id=s[i]-'a';
+		else
+		id=s[i]-17;
+		if(p->next[id]==0)
+		{
+			tree[total].sum=0;//cout<<"ok"<<endl;
+			memset(tree[total].next,0,sizeof(tree[total].next));
+			p->next[id]=&tree[total++];
+		}
+		//else cout<<"not null:"<<i<<" "<<s[i]<<endl;
+		p=p->next[id];
+	}
+	//cout<<"ok"<<endl;
+	if(p->sum==0)
+	{
+	 sum++;
+    }	 
+   	p->sum++;
+}
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		string s,ss,sss,te,s1,s2;
+		cin>>s;
+		int l=s.length();
+		creat();
+		for(int i=1;i<l;i++)
+		{
+			ss.assign(s.begin(),s.begin()+i); 
+			sss.assign(s.begin()+i,s.end());
+			s1=Reverse(ss);
+			s2=Reverse(sss);
+			te=ss+sss;
+			creattree(te);
+			te=ss+s2;
+			creattree(te);
+			te=s1+sss;
+			creattree(te);
+			te=s1+s2;
+			creattree(te);
+			te=sss+ss;
+			creattree(te);
+			te=sss+s1;
+			creattree(te);
+			te=s2+ss;
+			creattree(te);
+			te=s2+s1;
+			creattree(te);
+		}
+		cout<<sum<<endl;
+	}
+}
