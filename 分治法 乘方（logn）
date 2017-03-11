@@ -1,0 +1,27 @@
+#include<iostream>
+using namespace std;
+long long int x,sum=0;
+long long int fenzhi(int n)
+{
+	if(n==1) return x;
+	else
+	{
+		if(n%2==0)
+		{
+			sum=fenzhi(n/2)*fenzhi(n/2);
+		}
+		else
+		{
+			sum=fenzhi((n-1)/2)*fenzhi((n-1)/2)*x;
+		}
+	}
+}
+int main()
+{
+	int n;
+	while(cin>>x>>n)
+	{
+		fenzhi(n);
+		cout<<sum<<endl;
+	}
+}
