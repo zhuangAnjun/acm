@@ -1,0 +1,71 @@
+#include<iostream>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+
+int Xor[10002],si[101],k,a[10002],Min;
+
+int dfs(int place)
+{
+  //  cout<<"place="<<place<<endl;
+    if(Xor[place]!=-1)
+        return Xor[place];
+    if(place<Min)
+    {
+        return 0;
+    }
+    int num=0 ,mmin=10000,b[1002];//b数组太大会runtime error
+    memset(b,0,sizeof(b));
+    for(int i=0;i<k;i++)
+    {
+        if(place-si[i]>=0)
+        {
+            num++;
+            Xor[place-si[i]]=dfs(place-si[i]);
+            b[Xor[place-si[i]]]=1;
+        }
+        else break;
+    }
+    for(int i=0;i<num+2;i++)
+    {
+        if(b[i]==0&&mmin>i)
+           {
+            mmin=i;
+            break;
+        }
+    }
+    return mmin;
+}
+
+int main()
+{
+    while(cin>>k)
+    {
+        if(k==0)
+            break;
+        memset(Xor,-1,sizeof(Xor));
+        for(int i=0;i<k;i++)
+        {
+            cin>>si[i];
+        }
+        sort(si,si+k);
+        Min=si[0];
+        int num,sum,XOR;
+        cin>>num;
+        for(int i=0;i<num;i++)
+        {
+            cin>>sum;
+            XOR=0;
+            for(int j=0;j<sum;j++)
+            {
+                cin>>a[j];
+                XOR^=dfs(a[j]);
+                //memset(b,0,sizeof(b));
+            }
+            if(XOR==0)
+                cout<<"L";
+            else cout<<"W";
+        }
+        cout<<endl;
+    }
+}
