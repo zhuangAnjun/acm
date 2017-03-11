@@ -1,0 +1,132 @@
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<algorithm>
+#include<map>
+using namespace std;
+struct trie
+{
+	string s;
+	int flag;
+	trie *next[8];
+};
+trie *tree;
+void del(trie *p)
+{
+    for(int i=0;i<8;i++)
+	{
+		if(p->next[i]!=0)
+		  del(p->next[i]);
+	}
+	delete p;	
+}
+string F(string s)
+{
+	int l = s.length();
+	string s1, ss;
+	for (int i = 0; i<l; i++)
+	{
+		if (s[i] == 'a' || s[i] == 'b' || s[i] == 'c')
+			s1 = "0";
+		else if (s[i] == 'd' || s[i] == 'e' || s[i] == 'f')
+			s1 = "1";
+		else if (s[i] == 'g' || s[i] == 'h' || s[i] == 'i')
+			s1 = "2";
+		else if (s[i] == 'j' || s[i] == 'k' || s[i] == 'l')
+			s1 = "3";
+		else if (s[i] == 'm' || s[i] == 'n' || s[i] == 'o')
+			s1 = "4";
+		else if (s[i] == 'q' || s[i] == 'r' || s[i] == 's' || s[i] == 'p')
+			s1 = "5";
+		else if (s[i] == 't' || s[i] == 'u' || s[i] == 'v')
+			s1 = "6";
+		else
+			s1 = "7";
+		ss = ss + s1;
+	}
+	return ss;
+}
+void creattree(string s,int dj)
+{
+	int l=s.length();
+	string ss=F(s),te;
+	trie *p=tree;
+	for(int i=0;i<l;i++)
+	{
+		int id=ss[i]-'0';
+		te = te + s[i];
+		if(p->next[id]==0)
+		{
+			p->next[id]=new trie;
+			p=p->next[id];
+			p->flag=dj;
+			for(int j=0;j<8;j++)
+			{
+				p->next[j]=0;
+			}
+			p->s=te;
+		}
+		else
+		{
+		    p = p->next[id];
+		    if(p->s==te)
+	        p->flag+=dj;
+	        else if(p->flag<dj)
+	        {
+			p->s=te;
+			p->flag=dj;
+		    }
+	        p->s=te;
+		}
+	}
+}
+void Find(string s)
+{
+	int l = s.length();
+	trie *p = tree;
+	for (int i = 0; i<l-1; i++)
+	{
+		int id = s[i] - '2';
+		if(p->next[id]!=0)
+		{
+		 p = p->next[id];
+		 cout<<p->s<<endl;
+	    }
+	    else
+	    {
+		cout<<"MANUALLY"<<endl;
+		}
+	}
+}
+int main()
+{
+	int T;
+	cin >> T;
+	for (int t = 1; t <= T; t++)
+	{
+		tree=new trie;
+		for(int j=0;j<8;j++)
+		tree->next[j]=0;
+		int n, dj;
+		cin >> n;
+		string s;
+		for (int i = 0; i<n; i++)
+		{
+			cin >> s >> dj;
+			creattree(s, dj);
+		}
+		int m;
+		cin >> m;
+		cout<<"Scenario #"<<t<<":"<<endl;
+		for (int i = 0; i<m; i++)
+		{
+			cin >> s;
+			Find(s);
+			if(t<T)
+			cout << endl;
+		}
+		
+		if(t<T) cout<<endl;
+		del(tree);
+	}
+}
