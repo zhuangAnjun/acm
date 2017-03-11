@@ -1,0 +1,67 @@
+#include<iostream>
+#include<string>
+using namespace std;
+struct trie
+{
+	string e;
+	trie *node[26];
+};
+trie *tree;
+void creat(string m, string e)
+{
+	int l = m.length();
+	trie *p = tree;
+	for (int i = 0; i<l; i++)
+	{
+		if (p->node[m[i] - 'a'] == 0)
+		{
+			p->node[m[i] - 'a'] = new trie;
+			p = p->node[m[i] - 'a'];
+			for (int j = 0; j<26; j++)
+				p->node[j] = 0;
+			p->e = "0";
+		}
+		else p = p->node[m[i] - 'a'];
+	}
+	p->e = e;
+}
+void print(string m)
+{
+	int l = m.length();
+	trie *p = tree;
+	for (int i = 0; i < l; i++)
+	{
+		if (p->node[m[i] - 'a'] == 0)
+		{
+			cout << "eh" << endl;
+			return;
+		}
+		p = p->node[m[i] - 'a'];
+	}
+	if (p->e == "0") cout << "eh" << endl;
+	else
+		cout << p->e << endl;
+}
+int main()
+{
+	string m, e;
+	tree = new trie;
+	for (int i = 0; i<26; i++)
+		tree->node[i] = 0;
+	char b='0';
+	int sum = 0;
+	while (1)
+	{
+		cin >> e >> m;
+		if (b!='0'&&(b - 'a' >= 0 && b - 'a'<26))
+		e.insert(e.begin(), b);
+		creat(m, e);
+		getchar();
+		b = getchar();
+		if (b == '\n') break;
+	}
+	while (cin >> m)
+	{
+		print(m);
+	}
+}
