@@ -1,0 +1,77 @@
+#include<iostream>
+#include<queue>
+#include<cstring>
+using namespace std;
+queue<int> zero;
+queue<int> o;
+int road[101][101],out[101],edge;
+void initialtation()
+{
+	memset(road,0,sizeof(road));
+	memset(out,0,sizeof(out));
+	while(!zero.empty()) zero.pop();
+	while(!o.empty()) o.pop();
+}
+void Z(int n)
+{
+	for(int i=1;i<=n;i++)
+	{
+		if(out[i]==0)
+		{
+			zero.push(i);
+			//cout<<i<<endl;
+		}
+	}
+}
+void Kahn(int n)
+{
+	while(!zero.empty())
+	{
+		int f=zero.front();
+		zero.pop();
+		for(int i=1;i<=n;i++)
+		{
+			if(road[i][f]==1)
+			{
+				out[i]--;
+				road[i][f]=0;
+				if(out[i]==0)
+				{
+					zero.push(i);
+				}
+			}
+		}
+		o.push(f);
+	}
+}
+int main()
+{
+	int n;
+	while(cin>>n)
+	{
+		initialtation();
+		for(int i=1;i<=n;i++)
+		{
+			int k;
+			while(cin>>k)
+			{
+				if(k==0) break;
+				if(road[k][i]==0)
+				{
+					out[k]++;
+					road[k][i]=1;
+				}
+			}
+		}
+		Z(n);
+		Kahn(n);
+		for(int i=0;i<n;i++)
+		{
+			if(i<n-1)
+			cout<<o.front()<<' ';
+			else
+			cout<<o.front()<<endl;
+			o.pop();
+		}
+	}
+}
