@@ -1,0 +1,22 @@
+#include<iostream>
+#include<cmath>
+using namespace std;
+
+int main()
+{
+    int n,m;
+    while(cin>>n>>m)
+    {
+        if(n>m)
+        {
+            int c=n;
+            n=m;
+            m=c;
+        }
+        int a=m-n;
+        a*=(sqrt(5)+1)/2;
+        if((int)(a)==n)
+            cout<<"0"<<endl;
+        else cout<<"1"<<endl;
+    }
+}
