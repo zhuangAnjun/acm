@@ -1,0 +1,81 @@
+//这题直接暴力深搜后当连接的点大于等于4时开始判断所给路径是否全部满足
+//resule保存最后结果，num是题目给的已知路径数量，condition保存连接某些点必须经过的点，
+//order保存搜过的点，know是题目给的已知的点，vis是搜索中已经搜索过的点
+
+#include<stdio.h>
+#include<string.h>
+
+int resule,num,condition[10][10],order[10];
+bool vis[10],know[10][10];
+
+//暴力深搜
+void dfs(int count)
+{
+	//题目要求大于等于4
+	if(count>=4)
+	{
+		int n=0;
+		//判断所给的路径是否全部满足
+		for(int i=0;i<count;i++)
+		{
+			if(know[order[i-1]][order[i]])
+				n++;
+		}
+		//若全部满足结果+1
+		if(n==num)
+			resule++;
+	}
+	for(int i=1;i<10;i++)
+	{
+		//判断是否访问过以及上个点要连接这个点所经过的点是否已访问
+		if(vis[i]||!vis[condition[order[count-1]][i]])
+			continue;
+		else
+		{
+			vis[i]=true;
+			order[count]=i;
+			dfs(count+1);
+			vis[i]=false;
+		}
+	}
+	return;
+}
+
+//数组保存要连接某些点会经过的点
+void ini()
+{
+	condition[1][3]=condition[3][1]=2;
+	condition[7][9]=condition[9][7]=8;
+	condition[4][6]=condition[6][4]=5;
+	condition[1][7]=condition[7][1]=4;
+	condition[8][2]=condition[2][8]=5;
+	condition[3][9]=condition[9][3]=6;
+	condition[1][9]=condition[9][1]=5;
+	condition[3][7]=condition[7][3]=5;
+}
+
+int main()
+{
+	ini();
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		//初始化状态
+		resule=0;
+		memset(order,0,sizeof(order));
+		memset(vis,0,sizeof(vis));
+		memset(know,0,sizeof(know));
+		vis[0]=true;
+
+		scanf("%d",&num);
+		for(int i=0;i<num;i++)
+		{
+			int x,y;
+			scanf("%d %d",&x,&y);
+			know[x][y]=know[y][x]=true;
+		}
+		dfs(0);
+		printf("%d\n",resule);
+	}
+}
