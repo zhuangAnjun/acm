@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int length = s.length(), flag[10001],sum=0,Star=0,End=0;
+        for(int i=0;i<10001;i++)
+            flag[i]=-1;
+        for(int i=0;i<length;i++)
+        {
+            if(flag[s[i]]>=Star)
+            {
+                Star=flag[s[i]]+1;
+                flag[s[i]]=End++;
+            }
+            else
+                flag[s[i]]=End++;
+            if(sum<End-Star)
+                sum=End-Star;
+        }
+        return sum;
+    }
+};
