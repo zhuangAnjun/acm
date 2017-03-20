@@ -1,0 +1,50 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string ss="#";
+        int index=0,len=0,num[2002],maxIndex=0,Max=0;
+        memset(num,0,sizeof(num));
+        for(int i=0;i<s.length();i++)
+        {
+            ss+=s[i];
+            ss+='#';
+        }
+        for(int i=0;i<ss.length();i++)
+        {
+            if(len>i)
+            {
+                num[i]=num[2*index-i];
+                if(num[i]+i>len)
+                    num[i]=len-i;
+                if(i+num[i]>=len)
+                {
+                    while(num[i]+i+1<ss.length()&&i-num[i]-1>=0&&ss[num[i]+i+1]==ss[i-num[i]-1])
+                    {
+                        num[i]++;
+                    }
+                    len=i+num[i];
+                    index=i;
+                }
+            }
+            else
+            {
+                while(num[i]+i+1<ss.length()&&i-num[i]-1>=0&&ss[num[i]+i+1]==ss[i-1-num[i]])
+                     num[i]++;
+                len=i+num[i];
+                index=i;
+            }
+            if(Max<num[i])
+            {
+                Max=num[i];
+                maxIndex=i;
+            }
+        }
+        s.clear();
+        for(int i=maxIndex-Max;i<=maxIndex+Max;i++)
+        {
+            if(ss[i]!='#')
+                s+=ss[i];
+        }
+        return s;
+    }
+};
