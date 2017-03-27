@@ -1,0 +1,30 @@
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(s.length()<=2||numRows==1) return s;
+        string out;
+        int n=1,temp=0;
+        while(n<=numRows)
+        {
+            temp=n-1;
+            out+=s[temp];
+            while(temp<s.length())
+            {
+                if(n!=numRows)
+                {
+                    temp=temp+2*(numRows-n);
+                    if(temp<s.length())
+                        out+=s[temp];
+                }
+                if(n!=1)
+                {
+                    temp+=2*n-2;
+                    if(temp<s.length())
+                        out+=s[temp];
+                }
+            }
+            n++;
+        }
+        return out;
+    }
+};
