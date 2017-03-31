@@ -1,0 +1,48 @@
+//这道题是裸的kmp算法。kmp算法的思想主要是利用子串重叠部分
+//和原串匹配过的就不在进行匹配。
+//但是这题还有一个问题，就是我把获取next数组的函数以及kmp处理的函数
+//放在外面当做外函数时就会超时。
+
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int Next[10005];
+
+int main()
+{
+    int n;
+    cin>>n;
+    while(n--)
+    {
+        memset(Next,-1,sizeof(Next));
+        string s,ss;
+        cin>>ss>>s;
+        //获取next数组
+        int i1=0,j1=-1;
+        while(i1<ss.length())
+        {
+            if(j1==-1||ss[i1]==ss[j1])
+                Next[++i1]=++j1;
+            else
+                j1=Next[j1];
+        }
+        //kmp使用next数组找出子串
+        int i=0,j=0,num = 0;
+        while(i<s.length())
+        {
+            if(j==-1||s[i]==ss[j])
+            {
+                i++;
+                j++;
+            }
+            else j=Next[j];
+            if(j==ss.length())
+                num++;
+        }
+        cout<<num<<endl;
+    }
+}
