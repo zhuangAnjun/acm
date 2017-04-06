@@ -1,0 +1,74 @@
+//这题是简单地求公约数，注意数据会超过int，要使用long long。
+//另外一个数的公约数数目可以求到sqrt(n)，再判断是×2还是×2-1；
+
+#include<iostream>
+#include<cmath>
+
+using namespace std;
+
+long long a[5000001], b[5000001], numa, numb;
+
+void divisor(long long  n, long long int m)
+{
+	long long n1 = sqrtl(n), m1 = sqrtl(m);
+	for (long long  i = 1; i <= n1; i++)
+	{
+		if (n%i == 0)
+			a[numa++] = i;
+	}
+
+	for (long long  j = 1; j <= m1; j++)
+	{	
+		if (m%j == 0)
+			b[numb++] = j;
+	}
+
+}
+
+long long  gcd(long long int n, long long int m)
+{
+	if (m>n)
+	{
+		long long  temp = n;
+		n = m;
+		m = temp;
+	}
+	long long  c;
+	while (m != 0)
+	{
+		c = n%m;
+		n = m;
+		m = c;
+	}
+	return n;
+}
+
+ main()
+{
+	long long  N, M, num = 0;
+	cin >> N >> M;
+	if (N == M) cout << "1 1";
+	else 
+	{
+		numa = numb = 0;
+		divisor(N, M);
+
+		for(int i=0;i<numa;i++)
+		{
+			if(M%a[i]==0)
+				num++;
+			if(M%(N/a[i])==0)
+				num++;
+		}
+
+		//当N或者M恰好存在平方数时，要将约数数量-1
+		if(a[numa-1]*a[numa-1]==N)
+			numa=numa*2-1;
+		else numa*=2;
+		if(b[numb-1]*b[numb-1]==M)
+			numb=numb*2-1;
+		else numb*=2;
+		long long  Gcd = gcd(num, numa*numb);
+		cout << numa*numb / Gcd << " " << num / Gcd;
+	}
+}
