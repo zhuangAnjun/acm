@@ -1,0 +1,55 @@
+//对数组每一行进行处理后再对每一行动态规划
+
+#include<iostream>
+#include<cstring>
+
+using namespace std;
+
+int matrix[251][251],m[251];
+int K,R,C;
+
+int dp()
+{
+    int total=0,num=0,temp=0;
+    for(int i=1;i<=C;i++)
+    {
+        if(temp+m[i]<=K)
+        {
+            num++;
+            temp+=m[i];
+        }
+        else if(temp>0)
+        {
+            temp -= m[i-num];
+            num--;
+            i--;
+        }
+        if(num>total)
+             total=num;
+    }
+    return total;
+}   
+
+int main()
+{
+    int total=0;
+    cin>>R>>C>>K;
+    for(int i=1;i<=R;i++)
+        for(int j=1;j<=C;j++)
+            cin>>matrix[i][j];
+    for(int i=1;i<=R;i++)
+    {
+        memset(m,0,sizeof(m));
+        for(int j=i;j<=R;j++)
+        {
+            for(int k=1;k<=C;k++)
+                m[k]+=matrix[j][k];
+            int temp=dp();
+            if(temp*(j-i+1)>total)
+                total=temp*(j-i+1);
+        }
+    }
+    if(total>0)
+        cout<<total<<endl;
+    else cout<<"-1"<<endl;
+}
