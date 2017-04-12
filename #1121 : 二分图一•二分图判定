@@ -1,0 +1,74 @@
+//这道题要考虑多个二分图的可能性
+#include<iostream>
+#include<cstring>
+#include<queue>
+#include<set>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int flag[10002],N,M;
+queue<int> Q;
+set<int> S[10002];
+
+int bfs()
+{
+	while(!Q.empty())
+	{
+	    int f = Q.front();
+	    Q.pop();
+	    while(!S[f].empty())
+		{
+		    int t = *S[f].begin();
+		    S[f].erase(S[f].begin());
+			if(flag[t]==0)
+			{
+			    Q.push(t);
+			    flag[t] = -1 * flag[f];
+			}
+			else if(flag[t]==flag[f])
+			{
+			    return 0;
+			}
+		}
+	}
+	return 1;
+}
+
+int main()
+{
+    int T;
+    cin >> T;
+    while (T--)
+    {
+		memset(flag, 0, sizeof(flag));
+		while(!Q.empty())
+			Q.pop();
+		for (int i = 0; i <= 10001;i++)
+			S[i].clear();
+		cin >> N >> M;
+		int x, y;
+		for (int i = 0; i < M; i++)
+		{
+			cin >> x >> y;
+			S[x].insert(y);
+			S[y].insert(x);
+		}
+		int i;
+		//可能存在多个二分图
+		for (i = 1; i <= N;i++)
+		{
+			if(flag[i]==0)
+			{	flag[i] = 1;
+				Q.push(i);
+				if(!bfs())
+				{	
+					cout << "Wrong" << endl;
+					break;
+				}
+			}
+		}
+		if(i==N+1)
+			cout << "Correct" << endl;
+	}
+}
