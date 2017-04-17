@@ -1,0 +1,64 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<vector>
+#include<queue>
+using namespace std;
+
+vector<int> G[100001];
+int p[100001];
+//把无根树转化为以u为根节点的有根树
+void build_tree(int u, int father)
+{
+	int d=G[u].size();
+	for(int i=0;i<d;i++)
+	{
+		int v=G[u][i];
+		if(v!=father)
+			build_tree(v,p[v]=u);
+	}
+}
+
+//层次打印树
+void print_tree(int fa)
+{
+	queue<int> q;
+	q.push(1);
+	while(!q.empty())
+	{
+		int f=q.front();
+		q.pop();
+		int d=G[f].size();
+		cout<<f<<" : ";
+		for(int i=0;i<d;i++)
+		{
+			if(G[f][i]!=p[f])
+			{
+				int v=G[f][i];
+				q.push(v);
+				cout<<v<<" ";
+			}
+		}
+		cout<<endl;
+	}
+}
+
+int main()
+{
+	// freopen("in","r",stdin);
+	// freopen("out","w",stdout);
+	int n,u,v;
+	cin>>n;
+	memset(p,-1,sizeof(p));
+	for(int i=0;i<n-1;i++)
+	{
+		cin>>u>>v;
+		G[v].push_back(u);
+		G[u].push_back(v);
+	}
+	build_tree(1,1);
+
+	// for(int i=0;i<n;i++)
+	// 	cout<<i<<"  "<<p[i]<<endl;
+	// print_tree(1);
+}
