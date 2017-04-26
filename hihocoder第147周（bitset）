@@ -1,3 +1,6 @@
+//hihocoder第147周，bitset操作。
+//在统计每个人排名的时候要注意利用前一名的人已经匹配过的信息，时间复杂度为O（5n），否则会超时
+
 #include<iostream>
 #include<bitset>
 
@@ -7,6 +10,7 @@ struct stu{
     int grade[5];
 };
 
+//a用来保存每个人的排名情况
 bitset<30001> a[5][30001],b;
 
 int main()
@@ -21,8 +25,11 @@ int main()
         for(int j=0;j<5;j++)
             g_stu[j][S[i].grade[j]]=i;
     }
+    
+    //统计每个人的排名数据
     for(int i=0;i<5;i++)
     {
+        //对单科来说，后一名的人等于前一名的人的数据再把前一名的人的位置置为1
         for(int j=1;j<=N;j++)
         {
             a[i][g_stu[i][j]]=a[i][g_stu[i][j-1]];
