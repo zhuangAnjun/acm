@@ -1,0 +1,38 @@
+#include<iostream>
+#include<bitset>
+
+using namespace std;
+
+struct stu{
+    int grade[5];
+};
+
+bitset<30001> a[5][30001],b;
+
+int main()
+{
+    int N=0,num=0,g_stu[5][30001];
+    cin>>N;
+    stu S[30001];
+    
+    for(int i=0;i<N;i++)
+    { 
+        cin>>S[i].grade[0]>>S[i].grade[1]>>S[i].grade[2]>>S[i].grade[3]>>S[i].grade[4];
+        for(int j=0;j<5;j++)
+            g_stu[j][S[i].grade[j]]=i;
+    }
+    for(int i=0;i<5;i++)
+    {
+        for(int j=1;j<=N;j++)
+        {
+            a[i][g_stu[i][j]]=a[i][g_stu[i][j-1]];
+            if(j-1>0)
+            a[i][g_stu[i][j]].set(g_stu[i][j-1]);
+        }
+    }
+    for(int i=0;i<N;i++)
+    {
+        b=a[0][i]&a[1][i]&a[2][i]&a[3][i]&a[4][i];
+        cout<<b.count()<<endl;
+    }
+}
